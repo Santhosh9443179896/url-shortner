@@ -1,19 +1,20 @@
-<!-- templates/index.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Flask URL Shortener</title>
-</head>
-<body>
-    <h1>🔗 Flask URL Shortener</h1>
-    <form method="POST">
-        <label>Enter your long URL:</label><br>
-        <input type="text" name="original_url" required>
-        <button type="submit">Shorten</button>
-    </form>
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="card p-4 mx-auto" style="max-width: 500px;">
+  <h2 class="text-center mb-4">🔗 Shorten Your URL</h2>
+  <form method="POST">
+    <div class="mb-3">
+      <input type="url" name="original_url" class="form-control" placeholder="https://example.com" required>
+    </div>
+    <button class="btn btn-primary w-100">Shorten</button>
+  </form>
 
-    {% if short_url %}
-        <p>✅ Short URL: <a href="{{ short_url }}">{{ short_url }}</a></p>
-    {% endif %}
-</body>
-</html>
+  {% if short_url %}
+    <div class="alert alert-success mt-4 text-center">
+      <strong>Short URL:</strong><br>
+      <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mt-4">Welcome, {{ current_user.email }}</h2>
+
+<form method="POST" class="row g-3 mt-3">
+  <div class="col-md-8">
+    <input type="url" name="url" class="form-control" placeholder="Enter your long URL" required>
+  </div>
+  <div class="col-md-4">
+    <input type="datetime-local" name="expiry_date" class="form-control" placeholder="Expiry (optional)">
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Shorten</button>
+  </div>
+</form>
+
+<hr>
+
+<h4 class="mt-4">Your URLs</h4>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Short URL</th>
+      <th>Original</th>
+      <th>Clicks</th>
+      <th>Expiry</th>
+      <th>QR Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for url in urls %}
+    <tr>
+      <td><a href="{{ request.host_url }}{{ url.short_id }}" target="_blank">{{ request.host_url }}{{ url.short_id }}</a></td>
+      <td><a href="{{ url.original_url }}" target="_blank">{{ url.original_url[:50] }}{% if url.original_url|length > 50 %}...{% endif %}</a></td>
+      <td>{{ url.clicks }}</td>
+      <td>{{ url.expiry_date.strftime('%Y-%m-%d %H:%M') if url.expiry_date else 'No Expiry' }}</td>
+      <td>
+        <img src="{{ url_for('static', filename='qrcodes/' + url.short_id + '.png') }}" width="70">
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
